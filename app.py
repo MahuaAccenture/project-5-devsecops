@@ -139,7 +139,9 @@ def ask():
     # 10. Return approved response
     return jsonify({"response": response}), 200
 
-
+# TEMPORARY SECURITY TEST - DO NOT USE IN PRODUCTION
+def unsafe_calculator(user_input):
+    return eval(user_input)
 if __name__ == "__main__":
     app.run(port=5000)
 
