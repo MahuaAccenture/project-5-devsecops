@@ -1,0 +1,140 @@
+ 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vulnerable AI Chat Application</title>
+ 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eeeeee;
+            margin: 0;
+            padding: 30px;
+        }
+ 
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+ 
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+ 
+        #chatbox {
+            height: 350px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+ 
+        input {
+            width: 75%;
+            padding: 12px;
+        }
+ 
+        button {
+            padding: 12px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+ 
+        .user {
+            color: blue;
+            margin: 12px 0;
+        }
+ 
+        .bot {
+            color: green;
+            margin: 12px 0;
+        }
+    </style>
+</head>
+ 
+<body>
+ 
+<div class="container">
+ 
+    <h2>AI Security Capstone Chatbot</h2>
+ 
+    <p>Vulnerable-by-Design AI Application</p>
+ 
+    <div id="chatbox"></div>
+ 
+    <input
+        type="text"
+        id="message"
+        placeholder="Enter your message..."
+    >
+ 
+    <button onclick="sendMessage()">Send</button>
+ 
+</div>
+ 
+<script>
+ 
+async function sendMessage() {
+ 
+    const input = document.getElementById("message");
+    const chatbox = document.getElementById("chatbox");
+ 
+    const message = input.value.trim();
+ 
+    if (!message) return;
+ 
+    const userDiv = document.createElement("div");
+    userDiv.className = "user";
+    userDiv.textContent = "You: " + message;
+    chatbox.appendChild(userDiv);
+ 
+    input.value = "";
+ 
+    try {
+ 
+        const response = await fetch("/chat", {
+            method: "POST",
+ 
+            headers: {
+                "Content-Type": "application/json"
+            },
+ 
+            body: JSON.stringify({
+                message: message
+            })
+        });
+ 
+        const data = await response.json();
+ 
+        const botDiv = document.createElement("div");
+        botDiv.className = "bot";
+ 
+        if (!response.ok) {
+            botDiv.textContent = "Error: " + (data.error || "Request failed");
+        } else {
+            // INTENTIONAL VULNERABILITY:
+            // AI-generated output is inserted as HTML without sanitization.
+            botDiv.innerHTML = "AI: " + data.response;
+        }
+ 
+        chatbox.appendChild(botDiv);
+ 
+    } catch (error) {
+ 
+        chatbox.textContent += "Connection error: " + error.message;
+ 
+    }
+ 
+    chatbox.scrollTop = chatbox.scrollHeight;
+}
+ 
+</script>
+ 
+</body>
+</html>
