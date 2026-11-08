@@ -4,9 +4,7 @@ from pathlib import Path
 
 # Patterns identifying hardcoded system prompts
 SYSTEM_PROMPT_PATTERNS = [
-    r"SYSTEM_PROMPT\s*=",
-    r"SYSTEM_MESSAGE\s*=",
-    r"system_message\s*=",
+    r"\b(?:SYSTEM_PROMPT|SYSTEM_MESSAGE|system_message|system_prompt)\s*=\s*(?:\(\s*)?['\"]",
     r"role\s*=\s*['\"]system['\"]",
 ]
 
