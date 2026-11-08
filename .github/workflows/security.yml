@@ -83,4 +83,4 @@ jobs:
           python-version: "3.11"
 
       - name: Run AI security scanner
-        run: python inject_scanner.py app.py
+        run: python inject_scanner.py .
